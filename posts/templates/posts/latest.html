@@ -9,7 +9,7 @@
             </a>
             <p>{{ post.short_description }}</p>
             <div class="summary__meta">
-                <em>Posted on {{ post.publish_Date }}</em>
+                <em>Posted on {{ post.publish_Date|date:'d/m/Y' }}</em>
                 <div>Categories: {% for category in post.categories.all %} <span>{{ category.title }} |</span> {% endfor %}</div>
             </div>
         </div>
