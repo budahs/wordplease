@@ -6,6 +6,7 @@ env = environ.Env(DEBUG=(bool, False),)
 BASE_DIR = root()
 environ.Env.read_env('.env')
 SECRET_KEY = env('SECRET_KEY')
+SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
