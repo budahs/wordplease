@@ -1,0 +1,15 @@
+{% extends 'template.html' %}
+{% block head_title %} Add new post | Wordplease{% endblock %}
+{% block main_title %} Add new post {% endblock %}
+{% block main_content %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar post</button>
+    </form>
+{% endblock %}

@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -8,12 +10,12 @@ class Post(models.Model):
     content = models.TextField()
     image = models.URLField(null=True, blank=True)
     video = models.URLField(null=True, blank=True)
-    publish_Date = models.DateTimeField()
+    publish_Date = models.DateTimeField(null=True, blank=True, default=datetime.datetime.now())
     creation_date = models.DateTimeField(auto_now_add=True)
     modification_date = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(
         'category.Category',
-        help_text='Categorize this item.'
+        help_text='Set prefered categories.'
     )
 
     def __str__(self):

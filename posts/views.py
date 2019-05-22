@@ -1,8 +1,10 @@
 import datetime
 
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
+from posts.forms import PostsForm
 from posts.models import Post
 
 
@@ -22,3 +24,16 @@ def post(request, pk):
     html = render(request, 'posts/post.html', context)
 
     return HttpResponse(html)
+
+def create_post(request):
+    if request.method == 'POST':
+        form = PostsForm(request.POST)
+        if form.is_valid():
+            new_post = form.save()
+            messages.success(request, 'Post created successfully with ID {0}'.format(new_post.pk))
+            form = PostsForm()
+    else:
+        form = PostsForm()
+
+    context = {'form': form}
+    return render(request, 'posts/new.html', context)
