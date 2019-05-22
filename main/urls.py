@@ -10,7 +10,7 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     # Posts
-    path('post/new/', create_post, name='create_post'),
-    path('post/<int:pk>/', post, name='post'),
+    path('new-post/', create_post, name='create_post'),
+    path('blogs/<int:pk>/', post, name='post'),
     path('', latest_posts, name='home')
 ]
