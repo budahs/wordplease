@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -24,11 +25,15 @@ def post(request, pk):
     html = render(request, 'posts/post.html', context)
 
     return HttpResponse(html)
-
+# Ojo el decorador la url a la que redirigimos está en settings definida como LOGIN_URL
+@login_required
 def create_post(request):
     if request.method == 'POST':
-        form = PostsForm(request.POST)
+        post = Post()
+        post.owner = request.user
+        form = PostsForm(request.POST, instance=post)
         if form.is_valid():
+
             new_post = form.save()
             messages.success(request, 'Post created successfully with ID {0}'.format(new_post.pk))
             form = PostsForm()
