@@ -1,8 +1,10 @@
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.views import View
 
+from posts.models import Post
 from users.forms import LoginForm
 
 

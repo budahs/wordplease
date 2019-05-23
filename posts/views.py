@@ -13,17 +13,23 @@ from posts.models import Post
 class LatestPostViews(View):
 
     def get(self, request):
-        posts = Post.objects.all().filter(publish_Date__lte=datetime.datetime.now()).order_by('-modification_date')
+        posts = Post.objects.all().filter(publish_Date__lte=datetime.datetime.now()).order_by('-modification_date').select_related('owner')
         context = {'posts': posts[:4]}
         html = render(request, 'posts/latest.html', context)
 
         return HttpResponse(html)
 
+class UserBlogView(View):
+    def get(self, request, username):
+        posts = Post.objects.all().filter(owner__username=username).select_related('owner')
+        context = {'posts': posts}
+        html = render(request, 'posts/latest.html', context)
+        return HttpResponse(html)
 
 class PostView(View):
 
-    def get(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+    def get(self, request, username, pk):
+        post = get_object_or_404(Post.objects.select_related('owner'), pk=pk)
         context = {'post': post}
         html = render(request, 'posts/post.html', context)
 
