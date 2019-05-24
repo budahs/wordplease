@@ -4,6 +4,9 @@ from django.utils.safestring import mark_safe
 from posts.models import Post
 
 #admin.site.register(Post)
+admin.site.site_title = 'Wordplease Administration'
+admin.site.site_header = 'Wordplease Administration'
+admin.site.index_title = 'Wordplease Administration'
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
