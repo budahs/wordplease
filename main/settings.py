@@ -24,7 +24,8 @@ INSTALLED_APPS = [
     'posts',
     'category',
     'django.contrib.sites',
-    'users'
+    'users',
+    'ui'
 ]
 
 MIDDLEWARE = [

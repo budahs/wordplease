@@ -1,0 +1,11 @@
+{% extends 'template.html' %}
+{% block main_title %} All Blogs from our bloggers {% endblock %}
+{% block main_content %}
+    {% for blog in object_list %}
+    <div class="blogElement">
+        <h2>{{ blog.first_name }} {{ blog.last_name }}'s blog</h2>
+        <a href="{% url 'user_blog' blog.username %}" title="{{ blog.first_name }} {{ blog.last_name }}'s blog">See blog content</a>
+        <p>Número de posts publicados {{ blog.num_posts }} {{ blog.owner.title }}</p>
+    </div>
+    {% endfor %}
+{% endblock %}

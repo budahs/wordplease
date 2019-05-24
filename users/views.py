@@ -1,8 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.views import View
+from django.views.generic import ListView
 
 from posts.models import Post
 from users.forms import LoginForm
@@ -45,3 +48,12 @@ class LogoutView(View):
     def get(self, request):
         django_logout(request)
         return redirect('login')
+
+class BlogListView(ListView):
+    model = User
+    # paginate_by = 2
+    template_name = 'users/bloglist.html'
+
+    def get_queryset(self):
+        object_list = self.model.objects.filter(~Q(username='admin')).annotate(num_posts=Count('posts'))
+        return object_list
