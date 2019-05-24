@@ -1,11 +1,9 @@
-import json
-
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.views import View
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
-class UserAPI(View):
+class UserAPI(APIView):
     def get(self, request):
         users = User.objects.all()
         user_list =  []
@@ -15,5 +13,4 @@ class UserAPI(View):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
             })
-        user_json = json.dumps(user_list)
-        return HttpResponse(user_json, content_type='application/json')
+        return Response(user_list)
