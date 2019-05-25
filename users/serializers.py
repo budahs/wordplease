@@ -20,6 +20,11 @@ class InsertUserSerializer(UserSerializer):
     password = serializers.CharField()
     confirm_password = serializers.CharField()
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise ValidationError('The username {0} is already in use'.format(value))
+        return value
+
     def validate(self, attrs):
         password = attrs.get('password')
         confirm_password = attrs.get('confirm_password')
