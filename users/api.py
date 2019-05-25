@@ -1,16 +1,31 @@
 from django.contrib.auth.models import User
+from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from users.serializers import UserSerializer, UserListSerializer, InsertUserSerializer
 
 
 class UserAPI(APIView):
     def get(self, request):
         users = User.objects.all()
-        user_list =  []
-        for user in users:
-            user_list.append({
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-            })
-        return Response(user_list)
+        serializer = UserListSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = InsertUserSerializer(data=request.POST)
+        if serializer.is_valid():
+            new_user = serializer.save()
+            user_serializer = UserSerializer(new_user)
+            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetailAPI(APIView):
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
