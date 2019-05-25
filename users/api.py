@@ -14,7 +14,7 @@ class UserAPI(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = InsertUserSerializer(data=request.POST)
+        serializer = InsertUserSerializer(data=request.data)
         if serializer.is_valid():
             new_user = serializer.save()
             user_serializer = UserSerializer(new_user)
@@ -34,3 +34,13 @@ class UserDetailAPI(APIView):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        serializer = InsertUserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            updated_user = serializer.save()
+            user_serializer = UserSerializer(updated_user)
+            return Response(user_serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

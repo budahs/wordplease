@@ -21,7 +21,8 @@ class InsertUserSerializer(UserSerializer):
     confirm_password = serializers.CharField()
 
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
+        has_to_check_username = self.instance is not None and self.instance.username != value
+        if has_to_check_username and User.objects.filter(username=value).exists():
             raise ValidationError('The username {0} is already in use'.format(value))
         return value
 
@@ -34,11 +35,13 @@ class InsertUserSerializer(UserSerializer):
 
     def create(self, validated_data):
         user = User()
-        user.first_name = validated_data.get('first_name')
-        user.last_name = validated_data.get('last_name')
-        user.username = validated_data.get('username')
-        user.email = validated_data.get('email')
-        user.set_password(validated_data.get('password'))
-        user.save()
-        return user
+        return self.update(user, validated_data)
 
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name')
+        instance.last_name = validated_data.get('last_name')
+        instance.username = validated_data.get('username')
+        instance.email = validated_data.get('email')
+        instance.set_password(validated_data.get('password'))
+        instance.save()
+        return instance
