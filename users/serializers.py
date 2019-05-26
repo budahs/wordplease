@@ -1,6 +1,10 @@
+import os
+
 from django.contrib.auth.models import User
+from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.fields import SerializerMethodField
 
 
 class UserListSerializer(serializers.Serializer):
@@ -45,3 +49,17 @@ class InsertUserSerializer(UserSerializer):
         instance.set_password(validated_data.get('password'))
         instance.save()
         return instance
+
+class ListBlogSerializer(serializers.Serializer):
+    APIurl = SerializerMethodField()
+    url = SerializerMethodField()
+
+    def get_APIurl(self, obj):
+        return reverse('posts_api', args=[obj.username])
+
+    def get_url(self, obj):
+        return reverse('user_blog', args=[obj.username])
+
+    class Meta:
+        model = User
+        fields = ['APIurl', 'url']

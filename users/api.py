@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, ListAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.permissions import UserPermission
-from users.serializers import UserSerializer, UserListSerializer, InsertUserSerializer
+from users.serializers import UserSerializer, UserListSerializer, InsertUserSerializer, ListBlogSerializer
 
 
 class UserAPI(APIView):
@@ -51,3 +52,8 @@ class UserDetailAPI(APIView):
             return Response(user_serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ListBlogs(ListAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = ListBlogSerializer

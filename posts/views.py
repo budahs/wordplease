@@ -14,7 +14,7 @@ class LatestPostViews(View):
 
     def get(self, request):
         posts = Post.objects.all().filter(publish_Date__lte=datetime.datetime.now()).order_by('-modification_date').select_related('owner')
-        context = {'posts': posts[:4]}
+        context = {'posts': posts[:6]}
         html = render(request, 'posts/latest.html', context)
 
         return HttpResponse(html)

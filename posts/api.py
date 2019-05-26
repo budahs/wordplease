@@ -1,15 +1,17 @@
 import datetime
 
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from django.contrib.auth.models import User
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 
 from posts.models import Post
+from posts.permissions import PostPermission
 from posts.serializers import PostListSerializer, PostSerializer
 
 
-class PostsAPI(ListCreateAPIView):
+class PostsAPI(ListAPIView):
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         blog_user = self.kwargs.get('username')
@@ -27,4 +29,12 @@ class PostsAPI(ListCreateAPIView):
 
 class PostDetailAPI(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
+    permission_classes = [PostPermission]
     serializer_class = PostSerializer
+
+class CreatePostAPI(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
