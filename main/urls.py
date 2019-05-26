@@ -19,7 +19,7 @@ urlpatterns = [
     path('', LatestPostViews.as_view(), name='home'),
     # API
     path('api/users/', UserAPI.as_view(), name='users_api'),
-    path('api/users/<int:pk>', UserDetailAPI.as_view(), name='user_detail_api'),
-    path('api/posts/', PostsAPI.as_view(), name='posts_api'),
+    path('api/users/<int:pk>/', UserDetailAPI.as_view(), name='user_detail_api'),
+    path('api/posts/<str:username>/', PostsAPI.as_view(), name='posts_api'),
     path('api/posts/<int:pk>', PostDetailAPI.as_view(), name='post_detail__api')
 ]
