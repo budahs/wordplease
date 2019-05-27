@@ -1,4 +1,5 @@
 # import os
+import os
 import environ
 root = environ.Path('/')
 env = environ.Env(DEBUG=(bool, False),)
@@ -26,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'users',
     'ui',
-    'rest_framework'
+    'rest_framework',
+    'files'
 ]
 
 MIDDLEWARE = [
@@ -105,6 +107,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 LOGIN_URL = 'login'
 
 # Log de queries sql

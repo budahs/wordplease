@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404, ListAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -58,3 +59,5 @@ class ListBlogs(ListAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
     serializer_class = ListBlogSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['username']

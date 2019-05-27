@@ -1,17 +1,24 @@
 {% extends 'template.html' %}
-{% block main_title %} Latest posts {% endblock %}
+{% block main_title %} <i class="fas fa-th"></i> Latest posts {% endblock %}
+{% block main_class %}class="posts"{% endblock %}
 {% block main_content %}
-    {% for post in posts %}
-        <div class="summary col-xs-12 col-sm-6 col-md-6 col-lg-4">
-            <a href="{% url 'post' post.owner.username post.pk %}" title="{{ post.title }}">
-                <img style="width:100%" src="{{ post.image }}" alt="{{ post.title }}" title="{{ post.title }}">
-            </a>
-            <h2>{{ post.title }}</h2>
-            <p>{{ post.short_description }}</p>
-            <div class="summary__meta">
-                <em>Posted on {{ post.publish_Date|date:'d/m/Y' }} by {{ post.owner|title }}</em>
-                <div>Categories: {% for category in post.categories.all %} <span>{{ category.title }} |</span> {% endfor %}</div>
+    <div class="postsWrap container">
+        <div class="row">
+        {% for post in posts %}
+            <div class="summary col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                <div class="summary__wrap">
+                    <a href="{% url 'post' post.owner.username post.pk %}" title="{{ post.title }}">
+                        <img src="{{ post.image }}" alt="{{ post.title }}" title="{{ post.title }}">
+                    </a>
+                    <h2><i class="fas fa-square"></i>{{ post.title }}</h2>
+                    <p>{{ post.short_description }}</p>
+                    <div class="summary__meta">
+                        <em><i class="fas fa-calendar-alt"></i>Posted on {{ post.publish_Date|date:'d/m/Y' }} by <span>{{ post.owner|title }}</span></em>
+                        <div>Categories: {% for category in post.categories.all %} <span>{{ category.title }} |</span> {% endfor %}</div>
+                    </div>
+                </div>
             </div>
+        {% endfor %}
         </div>
-    {% endfor %}
+    </div>
 {% endblock %}

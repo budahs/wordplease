@@ -1,16 +1,24 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 
+from files.api import FileViewSet
 from posts.api import PostsAPI, PostDetailAPI, CreatePostAPI
 from posts.views import LatestPostViews, PostView, CreatePostView, UserBlogView
 from users.api import UserAPI, UserDetailAPI, ListBlogs
-from users.views import LogoutView, LoginView, BlogListView
+from users.views import LogoutView, LoginView, BlogListView, RegisterView
+
+router = SimpleRouter()
+router.register('api/files', FileViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Users
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
     # Posts
     path('new-post/', CreatePostView.as_view(), name='create_post'),
     path('blogs/', BlogListView.as_view(), name='blog_list'),
@@ -23,5 +31,5 @@ urlpatterns = [
     path('api/posts/', CreatePostAPI.as_view(), name='create_post_api'),
     path('api/posts/<str:username>/', PostsAPI.as_view(), name='posts_api'),
     path('api/posts/<int:pk>', PostDetailAPI.as_view(), name='post_detail_api'),
-    path('api/blogs/', ListBlogs.as_view(), name='blog_list_api')
-]
+    path('api/blogs/', ListBlogs.as_view(), name='blog_list_api'),
+] + router.urls + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

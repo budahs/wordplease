@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.models import User
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 
@@ -12,6 +13,9 @@ from posts.serializers import PostListSerializer, PostSerializer
 class PostsAPI(ListAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['title', 'short_description', 'categories__title']
+    order_fields = ['id', 'creation_date', 'modification_date', 'title']
 
     def get_queryset(self):
         blog_user = self.kwargs.get('username')

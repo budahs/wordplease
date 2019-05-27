@@ -4,29 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block head_title %} Wordplease - the blog of bloggers {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 </head>
 <body>
-    <header>
+    <header class="row">
         <div class="container">
             <nav>
-                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i>Home</a>
+                <a href="{% url 'blog_list' %}"><i class="fas fa-th"></i>Available blogs</a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Logout</a>
-                <a href="{% url 'create_post' %}">Add post</a>
+                    <a href="{% url 'logout' %}"><i class="fas fa-user-lock"></i>Logout</a>
+                    <a href="{% url 'create_post' %}"><i class="fas fa-feather-alt"></i>Add post</a>
                 {% else %}
-                <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'login' %}"><i class="fas fa-user-alt"></i>Login</a>
+                    <a href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Register</a>
                 {% endif %}
             </nav>
 
             <h3>Worplease</h3>
         </div>
     </header>
-    <main class="container">
-        <div class="row">
-            <h1 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{% block main_title %}{% endblock %}</h1>
-            {% block main_content %}{% endblock %}
-        </div>
+    <main id="main" {% block main_class %}{% endblock %}>
+        <h1 class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{% block main_title %}{% endblock %}</h1>
+        {% block main_content %}{% endblock %}
     </main>
     <footer>
         wordplease &copy; {% now 'y' %}. All rights reserved.

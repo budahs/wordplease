@@ -1,0 +1,17 @@
+{% extends 'template.html' %}
+{% block head_title %} Register at | Wordplease{% endblock %}
+{% block main_title %} Register {% endblock %}
+{% block main_content %}
+    <div class="register">
+        {% if messages %}
+            {% for message in messages %}
+            <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </div>
+{% endblock %}

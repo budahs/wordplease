@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import ListView
 
 from posts.models import Post
-from users.forms import LoginForm
+from users.forms import LoginForm, RegisterForm
 
 
 class LoginView(View):
@@ -55,5 +55,26 @@ class BlogListView(ListView):
     template_name = 'users/bloglist.html'
 
     def get_queryset(self):
-        object_list = self.model.objects.filter(~Q(username='admin')).annotate(num_posts=Count('posts'))
+        object_list = self.model.objects.filter(~Q(username='admin')).annotate(num_posts=Count('posts')).order_by('-num_posts')
         return object_list
+
+class RegisterView(View):
+
+    def render_template_with_form(self, request, form):
+        context = {'form': form}
+        return render(request, 'users/register.html', context)
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
+        form = RegisterForm()
+        return self.render_template_with_form(request, form)
+
+    def post(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return redirect('login')
+        return self.render_template_with_form(request, form)

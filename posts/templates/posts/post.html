@@ -2,7 +2,7 @@
 {% block head_title %} {{ post.title }} | Wordplease{% endblock %}
 {% block main_title %} {{ post.title }} {% endblock %}
 {% block main_content %}
-    <div class="post">
+    <div class="post container">
         <img src="{{ post.image }}" alt="{{ post.title }}" title="{{ post.title }}">
         <p>{{ post.content }}</p>
         <div class="summary__meta">
